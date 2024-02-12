@@ -103,7 +103,7 @@ func (d DataIndexHandler) GetContainerName() string {
 func (d DataIndexHandler) GetServiceImageName(persistenceName string) string {
 	// Fix for OSL 1.32 where we only have DI ephemeral image.
 	if persistenceName == "ephemeral" {
-		return "registry.redhat.io/openshift-serverless-1-tech-preview/logic-rhel8-operator:" + version.OperatorVersion
+		return "registry.redhat.io/openshift-serverless-1-tech-preview/logic-data-index-ephemeral-rhel8:" + version.OperatorVersion
 	}
 	// Since we don't have an upstream version so far, use latest nightly
 	var tag = "latest"
