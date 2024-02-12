@@ -28,9 +28,9 @@ import (
 const (
 	latestImageTag              = "latest"
 	nightlySuffix               = "nightly"
-	defaultWorkflowDevModeImage = "quay.io/kiegroup/kogito-swf-devmode"
-	defaultWorkflowBuilderImage = "quay.io/kiegroup/kogito-swf-builder"
-	defaultOperatorImage        = "quay.io/kiegroup/kogito-serverless-operator"
+	defaultWorkflowDevModeImage = "registry.redhat.io/openshift-serverless-1-tech-preview/logic-swf-devmode-rhel8"
+	defaultWorkflowBuilderImage = "registry.redhat.io/openshift-serverless-1-tech-preview/logic-swf-builder-rhel8"
+	defaultOperatorImage        = "registry.redhat.io/openshift-serverless-1-tech-preview/logic-rhel8-operator"
 )
 
 // GetWorkflowAppImageNameTag retrieve the tag for the image based on the Workflow based annotation, <workflowid>:latest otherwise
@@ -55,14 +55,6 @@ func GetDefaultOperatorImageTag() string {
 }
 
 func GetDefaultImageTag(imgTag string) string {
-	if version.IsSnapshot() {
-		imgTag += "-" + nightlySuffix
-	}
-	imgTag += ":"
-	if version.IsLatestVersion() {
-		imgTag += latestImageTag
-	} else {
-		imgTag += version.GetMajorMinor()
-	}
+	imgTag += ":" + version.OperatorVersion
 	return imgTag
 }

@@ -225,7 +225,7 @@ spec:
   provider:
     name: Red Hat
   relatedImages:
-  - image: registry.redhat.io/openshift-serverless-1-tech-preview/logic-operator-rhel8:1.32.0
+  - image: registry.redhat.io/openshift-serverless-1-tech-preview/logic-rhel8-operator:1.32.0
     name: IMAGE_LOGIC_SWF_OPERATOR
   - image: registry.redhat.io/openshift-serverless-1-tech-preview/logic-swf-devmode-rhel8:1.32.0
     name: IMAGE_LOGIC_SWF_DEVMODE
