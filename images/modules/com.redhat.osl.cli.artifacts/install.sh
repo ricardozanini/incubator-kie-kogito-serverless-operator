@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2024 Apache Software Foundation (ASF)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,31 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: org.apache.kie.sonataflow.operatorBuilder
-version: "1.0"
-description: Builds the operator binary
+set -e
 
-artifacts:
-  - name: main
-    path: "../../../../main.go"
-    target: "main.go"
-    dest: /workspace/
-
-  - name: controllers
-    path: "../../../../controllers"
-    dest: /workspace/controllers
-
-  - name: version
-    path: "../../../../version"
-    dest: /workspace/version
-
-  - name: utils
-    path: "../../../../utils"
-    dest: /workspace/utils
-
-  - name: log
-    path: "../../../../log"
-    dest: /workspace/log
-
-execute:
-  - script: install.sh
+mkdir -p /usr/share/kn/{linux_amd64,linux_ppc64le,linux_s390x,macos,windows}
