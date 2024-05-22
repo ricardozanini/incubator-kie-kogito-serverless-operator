@@ -218,7 +218,7 @@ func (d DataIndexHandler) MergePodSpec(podSpec corev1.PodSpec) (corev1.PodSpec, 
 	return *c, err
 }
 
-// hasPostgreSQLConfigured returns true when either the SonataFlow Platform PostgreSQL CR's structure or the one in the Data Index service specification is not nil
+// hasPostgreSQLConfigured returns true when either the SonataFlowPlatform PostgreSQL CR's structure or the one in the Data Index service specification is not nil
 func (d DataIndexHandler) hasPostgreSQLConfigured() bool {
 	return d.IsServiceSetInSpec() &&
 		((d.platform.Spec.Services.DataIndex.Persistence != nil && d.platform.Spec.Services.DataIndex.Persistence.PostgreSQL != nil) ||
@@ -389,7 +389,7 @@ func (j JobServiceHandler) MergeContainerSpec(containerSpec *corev1.Container) (
 	return mergeContainerSpec(containerSpec, &j.platform.Spec.Services.JobService.PodTemplate.Container)
 }
 
-// hasPostgreSQLConfigured returns true when either the SonataFlow Platform PostgreSQL CR's structure or the one in the Job service specification is not nil
+// hasPostgreSQLConfigured returns true when either the SonataFlowPlatform PostgreSQL CR's structure or the one in the Job service specification is not nil
 func (j JobServiceHandler) hasPostgreSQLConfigured() bool {
 	return j.IsServiceSetInSpec() &&
 		((j.platform.Spec.Services.JobService.Persistence != nil && j.platform.Spec.Services.JobService.Persistence.PostgreSQL != nil) ||

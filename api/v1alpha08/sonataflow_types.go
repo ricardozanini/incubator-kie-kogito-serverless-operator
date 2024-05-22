@@ -249,7 +249,7 @@ func (s *SonataFlowStatus) IsBuildFailed() bool {
 // +kubebuilder:printcolumn:name="URL",type=string,JSONPath=`.status.endpoint`
 // +kubebuilder:printcolumn:name="Ready",type=string,JSONPath=`.status.conditions[?(@.type=='Running')].status`
 // +kubebuilder:printcolumn:name="Reason",type=string,JSONPath=`.status.conditions[?(@.type=='Running')].reason`
-// +operator-sdk:csv:customresourcedefinitions:resources={{SonataFlowBuild,sonataflow.org/v1alpha08,"A SonataFlow Build"}}
+// +operator-sdk:csv:customresourcedefinitions:resources={{SonataFlowBuild,sonataflow.org/v1alpha08,"A SonataFlowBuild"}}
 // +operator-sdk:csv:customresourcedefinitions:resources={{Deployment,apps/v1,"A Deployment for the Flow"}}
 // +operator-sdk:csv:customresourcedefinitions:resources={{Service,serving.knative.dev/v1,"A Knative Serving Service for the Flow"}}
 // +operator-sdk:csv:customresourcedefinitions:resources={{Service,v1,"A Service for the Flow"}}

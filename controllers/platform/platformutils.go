@@ -69,7 +69,7 @@ func configureRegistry(ctx context.Context, c client.Client, p *operatorapi.Sona
 
 func setPlatformDefaults(p *operatorapi.SonataFlowPlatform, verbose bool) error {
 	if p.Spec.Build.Config.BuildStrategyOptions == nil {
-		klog.V(log.D).InfoS("SonataFlow Platform: setting publish strategy options", "namespace", p.Namespace)
+		klog.V(log.D).InfoS("SonataFlowPlatform: setting publish strategy options", "namespace", p.Namespace)
 		p.Spec.Build.Config.BuildStrategyOptions = map[string]string{}
 	}
 
@@ -80,12 +80,12 @@ func setPlatformDefaults(p *operatorapi.SonataFlowPlatform, verbose bool) error 
 			klog.V(log.I).InfoS("ContainerBuild timeout minimum unit is sec", "configured", p.Spec.Build.Config.GetTimeout().Duration, "truncated", d)
 		}
 
-		klog.V(log.D).InfoS("SonataFlow Platform: setting build timeout", "namespace", p.Namespace)
+		klog.V(log.D).InfoS("SonataFlowPlatform: setting build timeout", "namespace", p.Namespace)
 		p.Spec.Build.Config.Timeout = &metav1.Duration{
 			Duration: d,
 		}
 	} else {
-		klog.V(log.D).InfoS("SonataFlow Platform setting default build timeout to 5 minutes", "namespace", p.Namespace)
+		klog.V(log.D).InfoS("SonataFlowPlatform setting default build timeout to 5 minutes", "namespace", p.Namespace)
 		p.Spec.Build.Config.Timeout = &metav1.Duration{
 			Duration: 5 * time.Minute,
 		}

@@ -2102,6 +2102,65 @@ spec:
                 required:
                 - states
                 type: object
+              persistence:
+                description: Persistence defines the database persistence configuration
+                  for the workflow
+                maxProperties: 1
+                properties:
+                  postgresql:
+                    description: Connect configured services to a postgresql database.
+                    maxProperties: 2
+                    minProperties: 2
+                    properties:
+                      jdbcUrl:
+                        description: PostgreSql JDBC URL. Mutually exclusive to serviceRef.
+                          e.g. "jdbc:postgresql://host:port/database?currentSchema=data-index-service"
+                        type: string
+                      secretRef:
+                        description: Secret reference to the database user credentials
+                        properties:
+                          name:
+                            description: Name of the postgresql credentials secret.
+                            type: string
+                          passwordKey:
+                            description: Defaults to POSTGRESQL_PASSWORD
+                            type: string
+                          userKey:
+                            description: Defaults to POSTGRESQL_USER
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      serviceRef:
+                        description: Service reference to postgresql datasource. Mutually
+                          exclusive to jdbcUrl.
+                        properties:
+                          databaseName:
+                            description: Name of postgresql database to be used. Defaults
+                              to "sonataflow"
+                            type: string
+                          databaseSchema:
+                            description: Schema of postgresql database to be used.
+                              Defaults to "data-index-service"
+                            type: string
+                          name:
+                            description: Name of the postgresql k8s service.
+                            type: string
+                          namespace:
+                            description: Namespace of the postgresql k8s service.
+                              Defaults to the SonataFlowPlatform's local namespace.
+                            type: string
+                          port:
+                            description: Port to use when connecting to the postgresql
+                              k8s service. Defaults to 5432.
+                            type: integer
+                        required:
+                        - name
+                        type: object
+                    required:
+                    - secretRef
+                    type: object
+                type: object
               podTemplate:
                 description: PodTemplate describes the deployment details of this
                   SonataFlow instance.
@@ -2986,9 +3045,9 @@ spec:
                       service account token should be automatically mounted.
                     type: boolean
                   container:
-                    description: Container is the Kubernetes container where the workflow
-                      application should run. One can change this attribute in order
-                      to override the defaults provided by the operator.
+                    description: Container is the Kubernetes container where the application
+                      should run. One can change this attribute in order to override
+                      the defaults provided by the operator.
                     properties:
                       args:
                         description: 'Arguments to the entrypoint. The container image''s
@@ -5567,6 +5626,13 @@ spec:
                       - name
                       type: object
                     type: array
+                  deploymentModel:
+                    description: Defines the kind of deployment model for this pod
+                      spec. In dev profile, only "kubernetes" is valid.
+                    enum:
+                    - kubernetes
+                    - knative
+                    type: string
                   dnsConfig:
                     description: Specifies the DNS parameters of a pod. Parameters
                       specified here will be merged to the generated DNS configuration
@@ -7094,6 +7160,8 @@ spec:
                       type: object
                     type: array
                   replicas:
+                    description: Replicas define the number of pods to start by default
+                      for this deployment model. Ignored in "knative" deployment model.
                     format: int32
                     type: integer
                   resourceClaims:
@@ -9287,6 +9355,53 @@ spec:
                       type: object
                     type: array
                 type: object
+              sink:
+                description: Sink describes the sinkBinding details of this SonataFlow
+                  instance.
+                properties:
+                  CACerts:
+                    description: CACerts are Certification Authority (CA) certificates
+                      in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.
+                      If set, these CAs are appended to the set of CAs provided by
+                      the Addressable target, if any.
+                    type: string
+                  ref:
+                    description: Ref points to an Addressable.
+                    properties:
+                      address:
+                        description: Address points to a specific Address Name.
+                        type: string
+                      apiVersion:
+                        description: API version of the referent.
+                        type: string
+                      group:
+                        description: 'Group of the API, without the version of the
+                          group. This can be used as an alternative to the APIVersion,
+                          and then resolved using ResolveGroup. Note: This API is
+                          EXPERIMENTAL and might break anytime. For more details:
+                          https://github.com/knative/eventing/issues/5086'
+                        type: string
+                      kind:
+                        description: 'Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+                          This is optional field, it gets defaulted to the object
+                          holding it if left out.'
+                        type: string
+                    required:
+                    - kind
+                    - name
+                    type: object
+                  uri:
+                    description: URI can be an absolute URL(non-empty scheme and non-empty
+                      host) pointing to the target or a relative URI. Relative URIs
+                      will be resolved using the base URI retrieved from Ref.
+                    type: string
+                type: object
             required:
             - flow
             type: object
@@ -9350,6 +9465,27 @@ spec:
                 description: keeps track of how many failure recovers a given workflow
                   had so far
                 type: integer
+              services:
+                description: Services displays which platform services are being used
+                  by this workflow
+                properties:
+                  dataIndexRef:
+                    description: DataIndexRef displays information on the cluster-wide
+                      Data Index service
+                    properties:
+                      url:
+                        description: Url displays the base url of the service
+                        type: string
+                    type: object
+                  jobServiceRef:
+                    description: JobServiceRef displays information on the cluster-wide
+                      Job Service
+                    properties:
+                      url:
+                        description: Url displays the base url of the service
+                        type: string
+                    type: object
+                type: object
             type: object
         type: object
     served: true
