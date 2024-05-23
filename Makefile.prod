@@ -4,6 +4,8 @@
 # - use the VERSION as arg of the bundle target (e.g make bundle VERSION=0.0.2)
 # - use environment variables to overwrite this value (e.g export VERSION=0.0.2)
 VERSION ?= 1.33.0
+# TODO: UPDATE THIS TO THE OPERATOR 1.33.0 image SHA
+IMAGE_DIGEST ?= sha256:123456789
 
 # CHANNELS define the bundle channels used in the bundle.
 # Add a new line here if you would like to change its default config. (E.g CHANNELS = "candidate,fast,stable")
@@ -44,11 +46,11 @@ BUILDER ?= podman
 # USE_IMAGE_DIGESTS defines if images are resolved via tags or digests
 # You can enable this value if you would like to use SHA Based Digests
 # To enable set flag to true
-USE_IMAGE_DIGESTS ?= false
+USE_IMAGE_DIGESTS ?= true
 IMG_TAG_SEP = :
 IMG_VERSION = $(VERSION)
 ifeq ($(USE_IMAGE_DIGESTS), true)
-	BUNDLE_GEN_FLAGS += --use-image-digests
+	#BUNDLE_GEN_FLAGS += --use-image-digests
 	IMG_TAG_SEP = @
 	IMG_VERSION = $(IMAGE_DIGEST)
 endif
